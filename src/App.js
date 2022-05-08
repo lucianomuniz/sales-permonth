@@ -49,28 +49,43 @@ function App() {
     setBrandField(event.target.value);
   };
 
+  const dropBoxComponents = [
+    {
+      className: 'category-box',
+      values: categories,
+      onChangeHandler: handleCategoryChange,
+      placeholder: 'Select a Category',
+      id: 1,
+    },
+    {
+      className: 'product-box',
+      values: products,
+      onChangeHandler: handleProductChange,
+      placeholder: 'Select a Product',
+      id: 2,
+    },
+    {
+      className: 'brand-box',
+      values: brands,
+      onChangeHandler: handleBrandChange,
+      placeholder: 'Select a Brand',
+      id: 3,
+    },
+  ];
+
   return (
     <div className='App'>
-      <DropBox
-        className='category-box'
-        values={categories}
-        onChangeHandler={handleCategoryChange}
-        placeholder='Category'
-      />
-
-      <DropBox
-        className='product-box'
-        values={products}
-        onChangeHandler={handleProductChange}
-        placeholder='Product'
-      />
-
-      <DropBox
-        className='brand-box'
-        values={brands}
-        onChangeHandler={handleBrandChange}
-        placeholder='Brand'
-      />
+      {dropBoxComponents.map((dropBox) => {
+        return (
+          <DropBox
+            key={dropBox.id}
+            className={dropBox.className}
+            values={dropBox.values}
+            onChangeHandler={dropBox.onChangeHandler}
+            placeholder={dropBox.placeholder}
+          />
+        );
+      })}
 
       <BarChart values={selectedValues} />
     </div>
