@@ -1,90 +1,78 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import ComboBox from './components/combo-box/combo-box.component';
+import DropBox from './components/drop-box/drop-box.component';
 import BarChart from './components/bar-chart/bar-chart.component';
 import './App.css';
 
 // TODO: Get data from API Routes
-const categories = [{ name: 'Food' }, { name: 'Fruit' }, { name: 'Garden' }];
-const products = [{ name: 'Chocolate' }, { name: 'Rice' }, { name: 'Beans' }];
-const brands = [{ name: 'Hershey' }, { name: 'Lindt' }, { name: 'Dove' }];
+const categories = [
+  { label: 'Food', value: 'Food', id: 1 },
+  { label: 'Fruit', value: 'Fruit', id: 2 },
+  { label: 'Garden', value: 'Garden', id: 3 },
+];
+
+const products = [
+  { label: 'Chocolate', value: 'Chocolate', id: 1 },
+  { label: 'Rice', value: 'Rice', id: 2 },
+  { label: 'Beans', value: 'Beans', id: 3 },
+];
+
+const brands = [
+  { label: 'Hershey', value: 'Hershey', id: 1 },
+  { label: 'Lindt', value: 'Lindt', id: 2 },
+  { label: 'Dove', value: 'Dove', id: 3 },
+];
+
+const selectedValues = {
+  category: '',
+  product: '',
+  brand: '',
+};
 
 function App() {
-  const [categorySearchField, setCategorySearchField] = useState('');
-  const [productSearchField, setProductSearchField] = useState('');
-  const [brandSearchField, setBrandSearchField] = useState('');
+  const [categoryField, setCategoryField] = useState('');
+  const [productField, setProductField] = useState('');
+  const [brandField, setBrandField] = useState('');
 
-  const [filteredCategories, setFilteredCategories] = useState(categories);
-  const [filteredProducts, setFilteredProducts] = useState(products);
-  const [filteredBrands, setFilteredBrands] = useState(brands);
-
-  // Category
-  useEffect(() => {
-    const newFilteredCategories = categories.filter((category) => {
-      return category.name.toLocaleLowerCase().includes(categorySearchField);
-    });
-
-    setFilteredCategories(newFilteredCategories);
-  }, [categories, categorySearchField]);
-
-  // Product
-  useEffect(() => {
-    const newFilteredProducts = products.filter((product) => {
-      return product.name.toLocaleLowerCase().includes(productSearchField);
-    });
-
-    setFilteredProducts(newFilteredProducts);
-  }, [products, productSearchField]);
-
-  // Brands
-  useEffect(() => {
-    const newFilteredBrands = brands.filter((brand) => {
-      return brand.name.toLocaleLowerCase().includes(brandSearchField);
-    });
-
-    setFilteredBrands(newFilteredBrands);
-  }, [brands, brandSearchField]);
-
-  const onCategoryChange = (event) => {
-    const categoryFieldString = event.target.value.toLocaleLowerCase();
-    setCategorySearchField(categoryFieldString);
+  const handleCategoryChange = (event) => {
+    selectedValues.category = event.target.value;
+    setCategoryField(event.target.value);
   };
 
-  const onProductChange = (event) => {
-    const productFieldString = event.target.value.toLocaleLowerCase();
-    setProductSearchField(productFieldString);
+  const handleProductChange = (event) => {
+    selectedValues.product = event.target.value;
+    setProductField(event.target.value);
   };
 
-  const onBrandChange = (event) => {
-    const brandFieldString = event.target.value.toLocaleLowerCase();
-    setBrandSearchField(brandFieldString);
+  const handleBrandChange = (event) => {
+    selectedValues.brand = event.target.value;
+    setBrandField(event.target.value);
   };
 
   return (
     <div className='App'>
-      <ComboBox
-        className='category-search-box'
-        onChangeHandler={onCategoryChange}
-        placeholder='categories'
+      <DropBox
+        className='category-box'
+        values={categories}
+        onChangeHandler={handleCategoryChange}
+        placeholder='Category'
       />
 
-      <ComboBox
-        className='product-search-box'
-        onChangeHandler={onProductChange}
-        placeholder='products'
+      <DropBox
+        className='product-box'
+        values={products}
+        onChangeHandler={handleProductChange}
+        placeholder='Product'
       />
 
-      <ComboBox
-        className='brand-search-box'
-        onChangeHandler={onBrandChange}
-        placeholder='brands'
+      <DropBox
+        className='brand-box'
+        values={brands}
+        onChangeHandler={handleBrandChange}
+        placeholder='Brand'
       />
 
-      <BarChart
-        categories={filteredCategories}
-        products={filteredProducts}
-        brands={filteredBrands}
-      />
+      <BarChart values={selectedValues} />
     </div>
   );
 }
