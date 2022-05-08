@@ -1,6 +1,5 @@
 import './drop-box.styles.css';
 
-// TODO: Build a Combo-Box (select) component
 const DropBox = ({ className, values, onChangeHandler, placeholder }) => (
   <div className={`drop-box ${className}`}>
     {placeholder}:
